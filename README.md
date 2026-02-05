@@ -38,7 +38,7 @@ Airflow (running in Docker) orchestrates the pipeline.
 ## Data Modeling
 - **Staging Table**
   - Structured air-quality data loaded from GCS
-- **Fact Table (`fact_air_quality`)**
+- **Fact Table (`fact_pollution`)**
   - Grain: **1 city × 1 timestamp**
   - Metrics: AQI, PM2.5, PM10, O₃, NO₂, CO, SO₂
 - **Dimension Table (`dim_city`)**
