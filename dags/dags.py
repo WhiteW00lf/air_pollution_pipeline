@@ -1,6 +1,10 @@
 from google.cloud import storage
 from google.cloud import bigquery
 from dotenv import load_dotenv
+from datetime import datetime
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from run_bg import make_tables
 import requests
 import pandas as pd
 import os
@@ -114,6 +118,29 @@ def upload_to_gcs():
         print("File uploaded to GCS successfully.")
 
 
-#
-fetch_pollution_data()
-upload_to_gcs()
+
+with DAG (
+    dag_id="pollution_data_pipeline",
+    schedule_interval="@daily",
+    start_date=datetime(2026, 2, 5),
+    catchup=False,
+
+    
+) as dag:
+    
+    fetch_data = PythonOperator(
+        task_id="fetch_data",
+        python_callable=fetch_pollution_data,
+    )
+
+    upload_data = PythonOperator(
+        task_id="upload_data",
+        python_callable=upload_to_gcs,
+    )
+
+    create_tables = PythonOperator(
+        task_id="create_tables",
+        python_callable=make_tables,
+    )
+
+    fetch_data >> upload_data >> create_tables
