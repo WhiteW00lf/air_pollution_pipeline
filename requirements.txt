@@ -3,3 +3,4 @@ google-cloud-storage
 pandas
 google-cloud-bigquery
 python-dotenv
+apache-airflow
