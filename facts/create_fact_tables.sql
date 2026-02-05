@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `deportfolio-486507.pollution_data.fact_pollution_data`
+CREATE OR REPLACE TABLE `deportfolio-486507.pollution_data.fact_pollution`
 PARTITION BY created_date
 CLUSTER BY city_name 
 AS
@@ -10,7 +10,7 @@ SELECT
     pm10,
     o3,
     no2
-FROM `deportfolio-486507.pollution_data.stg_pollution_data`
+FROM `deportfolio-486507.pollution_data.stg_pollution`
 WHERE created_at IS NOT NULL
 AND city IS NOT NULL
 AND aqi IS NOT NULL

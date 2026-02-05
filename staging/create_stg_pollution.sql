@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE IF NOT EXISTS `deportfolio-486507.pollution_data.stg_pollution_data` (
+CREATE EXTERNAL TABLE IF NOT EXISTS `deportfolio-486507.pollution_data.stg_pollution` (
 
     created_at TIMESTAMP ,
     city STRING ,
