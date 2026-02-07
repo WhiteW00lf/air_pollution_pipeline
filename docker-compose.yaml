@@ -1,37 +1,18 @@
 
-services:
-  postgres:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
-    volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
-
-  airflow-webserver:
-    image: apache/airflow:2.8.1
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    volumes:
-      - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts
+  airflow:
+    image: apache/airflow:2.8.4
+    container_name: airflow
+    restart: always
     ports:
       - "8080:8080"
-    command: webserver
-
-  airflow-scheduler:
-    image: apache/airflow:2.8.1
-    depends_on:
-      - airflow-webserver
-    env_file:
-      - .env
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts
-    command: scheduler
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - /root/.config/gcloud:/home/airflow/.config/gcloud
 
-volumes:
-  postgres-db-volume:
+    env_file:
+      - .env
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: standalone
